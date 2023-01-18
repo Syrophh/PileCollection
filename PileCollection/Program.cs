@@ -11,7 +11,19 @@ namespace PileCollection
     {
         static void Main(string[] args)
         {
-            TestePileVidePleine(5);
+            try
+            {
+                //TestePileVidePleine(5);
+                //TestePileVidePleine(0);
+                TesteEmpiler(5);
+                TesteEmpiler(2);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            Console.WriteLine("Fin du programme, Appuyez sur unr touche pour terminer");
+            Console.ReadKey();
         }
 
         struct Pile
@@ -30,8 +42,19 @@ namespace PileCollection
         /// <param name="PNbElemt">Nombre d'élément maxi de la Pile</param>
         static void InitPile(ref Pile pUnePile, int PNbElemt)
         {
-            pUnePile.maxElt = PNbElemt;
-            pUnePile.tabElem = new ArrayList ();
+            pUnePile.tabElem = new ArrayList();
+            if (PNbElemt > 0)
+            {
+                pUnePile.maxElt = PNbElemt;
+            }
+            if (PNbElemt < 0)
+            {
+                pUnePile.maxElt = Math.Abs(PNbElemt);
+            }
+            if (PNbElemt == 0)
+            {
+                throw new Exception("maxElt ne peut pas être nul");
+            }
         }
 
         ///<summary>
@@ -99,6 +122,33 @@ namespace PileCollection
             else
             {
                 Console.WriteLine("La pile n'est pas pleine");
+            }
+        }
+
+        ///<summary>
+        ///Test de la méthode Empiler
+        /// </summary>
+        /// <param name="nbElements">Nombre d'éléments maximum de la pile</param>
+        static void TesteEmpiler(int nbElemets)
+        {
+            Pile unePile = new Pile();
+            InitPile(ref unePile, nbElemets);
+            Empiler(ref unePile, 2);
+            Empiler(ref unePile, 14);
+            Empiler(ref unePile, 6);
+        }
+
+        ///<summary>
+        ///Renvoie la valeur située au sommet de la pile.
+        ///Si la pile est vide, la méthode déclenche une Exception
+        /// </summary>
+        /// <param name="pUnePile">Pile à partir de laquelle il faut dépiler</param>
+        /// <returns>Valeur dépilée</returns>
+        static object Depiler(ref Pile pUnePile)
+        {
+            if (!PileVide(pUnePile))
+            {
+                pUnePile.tabElem.;
             }
         }
     }
