@@ -11,6 +11,7 @@ namespace PileCollection
     {
         static void Main(string[] args)
         {
+            TestePileVidePleine(5);
         }
 
         struct Pile
@@ -41,7 +42,7 @@ namespace PileCollection
         /// <returns></returns>
         static bool PileVide(Pile pUnePile)
         {
-            return pUnePile.maxElt == 0;
+            return pUnePile.tabElem.Count == 0;
         }
 
         ///<summary>
@@ -65,13 +66,39 @@ namespace PileCollection
 
         static void Empiler(ref Pile pUnePile, Object PObj)
         {
-            try
-            {
+                if (!PilePleine(pUnePile))
+                {
+                    pUnePile.tabElem.Add(PObj);
+                }
+                else
+                {
+                    throw new Exception("Pile pleine, impossible d'empiler un élément");
+                }
+        }
 
+        ///<summary>
+        ///teste des méthodes PileVide et PilePleine
+        /// </summary>
+        /// <param name="nbElements">Nombre d'éléments maximum de la pile</param>
+        static void TestePileVidePleine(int nbElements)
+        {
+            Pile unePile = new Pile();
+            InitPile(ref unePile, nbElements);
+            if (PileVide(unePile))
+            {
+                Console.WriteLine("la pile est vide");
             }
-            catch
+            else
             {
-
+                Console.WriteLine("La pile n'est pas vide");
+            }
+            if (PilePleine(unePile))
+            {
+                Console.WriteLine("la pile est pleine");
+            }
+            else
+            {
+                Console.WriteLine("La pile n'est pas pleine");
             }
         }
     }
