@@ -15,14 +15,15 @@ namespace PileCollection
             {
                 //TestePileVidePleine(5);
                 //TestePileVidePleine(0);
-                TesteEmpiler(5);
-                TesteEmpiler(2);
+                //TesteEmpiler(5);
+                //TesteEmpiler(2);
+                TestEmpilerDepiler(5);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            Console.WriteLine("Fin du programme, Appuyez sur unr touche pour terminer");
+            Console.WriteLine("Fin du programme, Appuyez sur une touche pour terminer");
             Console.ReadKey();
         }
 
@@ -148,8 +149,64 @@ namespace PileCollection
         {
             if (!PileVide(pUnePile))
             {
-                pUnePile.tabElem.;
+                var result = pUnePile.tabElem[pUnePile.tabElem.Count - 1];
+                pUnePile.tabElem.Remove(pUnePile.tabElem.Count-1);
+                return result;
             }
+            else
+            {
+                throw new Exception("Pile vide, impossible de dépiler un élément");
+            }
+        }
+
+        ///<summary>
+        ///Test D'empiler - dépiler
+        /// </summary>
+        /// <param name="nbElements">Nombre d'éléments maximum de la pile</param>
+        static void TestEmpilerDepiler(int nbElements)
+        {
+            try
+            {
+                Pile unePile = new Pile();
+                InitPile(ref unePile, 5);
+                Empiler(ref unePile, 2);
+                Empiler(ref unePile, 22);
+                int valeurDepilee = (int)Depiler(ref unePile);
+                Console.WriteLine("valeur dépilée : " + valeurDepilee);
+                Empiler(ref unePile, 17);
+                valeurDepilee = (int)Depiler(ref unePile);
+                valeurDepilee = (int)Depiler(ref unePile);
+                valeurDepilee = (int)Depiler(ref unePile);
+                valeurDepilee = (int)Depiler(ref unePile);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Convertit un nombre de base 10 en base 8
+        /// </summary>
+        /// <param name="pNbElements">Nombre d'éléments de la pile</param>
+        /// <param name="pNNbAConvertir">Nombre à convertir</param>
+        /// <param name="pNewbase">Nouvelle base du nombre</param>
+        /// <returns></returns>
+        static string Convertir(int pNbElements, int pNbAConvertir, Int32 pNewbase)
+        {
+
+        }
+
+        ///<summary>
+        ///Test de la méthode Conversion(...)
+        ///Cette méthode permet la saisie des valeurs utiles à la conversion:
+        ///nombre d'éléments de la collection,
+        ///nombre à convertir,
+        ///nouvelle base
+        /// </summary>
+        static void TestConversion()
+        {
+
         }
     }
 }
