@@ -11,19 +11,20 @@ namespace PileCollection
     {
         static void Main(string[] args)
         {
-            try
-            {
-                //TestePileVidePleine(5);
-                //TestePileVidePleine(0);
-                //TesteEmpiler(5);
-                //TesteEmpiler(2);
-                TestEmpilerDepiler(5);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            Console.WriteLine("Fin du programme, Appuyez sur une touche pour terminer");
+            //try
+            //{
+            //    //TestePileVidePleine(5);
+            //    //TestePileVidePleine(0);
+            //    //TesteEmpiler(5);
+            //    //TesteEmpiler(2);
+            //    TestEmpilerDepiler(5);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
+            //Console.WriteLine("Fin du programme, Appuyez sur une touche pour terminer");
+            TestConversion();
             Console.ReadKey();
         }
 
@@ -149,7 +150,7 @@ namespace PileCollection
         {
             if (!PileVide(pUnePile))
             {
-                var result = pUnePile.tabElem[pUnePile.tabElem.Count - 1];
+                int result = (int) pUnePile.tabElem[pUnePile.tabElem.Count - 1];
                 pUnePile.tabElem.Remove(pUnePile.tabElem.Count-1);
                 return result;
             }
@@ -194,7 +195,36 @@ namespace PileCollection
         /// <returns></returns>
         static string Convertir(int pNbElements, int pNbAConvertir, Int32 pNewbase)
         {
+            String resultat = "";
+            int premierNombre = pNbAConvertir;
+            Pile pileConvertion = new Pile();
+            InitPile(ref pileConvertion, pNbElements);
+            while (pNbAConvertir != 0 && !PilePleine(pileConvertion))
+            {
+                Empiler(ref pileConvertion, pNbAConvertir % pNewbase);
+                pNbAConvertir /= pNewbase;
+            }
 
+            if (pNbAConvertir != 0)
+            {
+                return "Impossible de convertir, la pile est trop petite";
+            }
+            else
+            {
+                while (!PileVide(pileConvertion))
+                {
+                    int nb = (int)Depiler(ref pileConvertion);
+                    if (nb < 10)
+                    {
+                        resultat += Convert.ToString(nb);
+                    }
+                    else
+                    {
+                        resultat += nb.ToString("X");
+                    }
+                }
+                return "La valeur de " + premierNombre + " (base 10) vaut " + resultat + " en base " + pNewbase;
+            }
         }
 
         ///<summary>
@@ -206,7 +236,18 @@ namespace PileCollection
         /// </summary>
         static void TestConversion()
         {
-
+            String nNombre = "";
+            int elements = 0;
+            int nombre = 0;
+            int nBase = 0;
+            Console.WriteLine("Veuillez entrer le nombre d'éléments : ");
+            elements = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Veuillez entrer le nombre à convertir : ");
+            nombre = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Veuillez entrer la nouvelle base entre 2 et 16 : ");
+            nBase = Convert.ToInt32(Console.ReadLine());
+            nNombre = Convertir(elements, nombre, nBase);
+            Console.WriteLine(nNombre);
         }
     }
 }
