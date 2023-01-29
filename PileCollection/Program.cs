@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,7 +26,17 @@ namespace PileCollection
             //    Console.WriteLine(ex.Message);
             //}
             //Console.WriteLine("Fin du programme, Appuyez sur une touche pour terminer");
-            TestConversion();
+            //TestConversion();
+            Console.WriteLine(RecupereLoremIpsum(3));
+            try
+            {
+                TesteInversePhrase();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            Console.WriteLine("Fin du programme, Appuyez sur une touche pour terminer");
             Console.ReadKey();
         }
 
@@ -151,7 +163,7 @@ namespace PileCollection
             if (!PileVide(pUnePile))
             {
                 int result = (int) pUnePile.tabElem[pUnePile.tabElem.Count - 1];
-                pUnePile.tabElem.Remove(pUnePile.tabElem.Count-1);
+                pUnePile.tabElem.RemoveAt(pUnePile.tabElem.Count-1);
                 return result;
             }
             else
@@ -236,7 +248,7 @@ namespace PileCollection
         /// </summary>
         static void TestConversion()
         {
-            String nNombre = "";
+            string nNombre = "";
             int elements = 0;
             int nombre = 0;
             int nBase = 0;
@@ -249,5 +261,86 @@ namespace PileCollection
             nNombre = Convertir(elements, nombre, nBase);
             Console.WriteLine(nNombre);
         }
+
+
+
+        static String RecupereLoremIpsum(int nbParagraphes)
+        {
+            HttpClient client = new HttpClient();
+
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/text"));
+            String url = $"https://loripsum.net/api/{nbParagraphes}/short/plaintext";
+            var response = client.GetAsync(url).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = response.Content.ReadAsStringAsync().Result;
+
+                return responseBody;
+            }
+            else
+            {
+                throw new Exception("Erreur API : " + response.StatusCode + " " + response.ReasonPhrase);
+            }
+        }
+
+        static void TestSplit()
+        {
+            String phrase = "Il fait toujours beau à Toulon";
+            var tab = phrase.Split(' ');
+
+            string valeurs = "rue;avenue;boulevard;place";
+            tab = valeurs.Split(';');
+        }
+
+        static string InversePhrase(String phrase)
+        {
+            Pile maPile = new Pile();
+            InitPile(ref maPile, 200);
+            var tab = phrase.Split(' ');
+            foreach(string mot in tab)
+            {
+                Empiler(ref maPile, mot);
+            }
+            String message = "";
+            while (!PileVide(maPile))
+            {
+                message += " " + Depiler(ref maPile);
+            }
+            return message;
+        }
+
+        static void TesteInversePhrase()
+        {
+            try
+            {
+                String phrase = RecupereLoremIpsum(3);
+                Console.WriteLine(phrase);
+                String phraseInversee = InversePhrase(phrase);
+                Console.WriteLine("\n Version Pile");
+                Console.WriteLine(phraseInversee);
+                phraseInversee = InversePhraseMieux(phrase);
+                Console.WriteLine("\n Version Améliorée");
+                Console.WriteLine(phraseInversee);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        static string InversePhraseMieux(String phrase)
+        {
+            
+            var tab = phrase.Split(' ');
+            Array.Reverse(tab);
+            for (int i = 0; i <= tab.Length - 1; i++)
+            {
+                Console.Write(tab[i] + "" + ' ');
+            }
+            return phrase;
+        }
+
     }
 }
